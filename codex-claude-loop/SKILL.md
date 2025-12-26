@@ -12,6 +12,8 @@ This skill implements a balanced engineering loop:
 - **Continuous Review**: Each AI reviews the other's work
 - **Context Handoff**: Always continue with whoever last cleaned up
 
+> **Note:** Model + reasoning settings are assumed to be handled by the existing Codex config. Commands below do not specify them.
+
 ## Phase 1: Planning with Claude Code
 1. Start by creating a detailed plan for the task
 2. Break down the implementation into clear steps
@@ -19,21 +21,18 @@ This skill implements a balanced engineering loop:
 4. Output the plan in a structured format
 
 ## Phase 2: Plan Validation with Codex
-1. Ask user (via `AskUserQuestion`): 
-   - Model: `gpt-5` or `gpt-5-codex`
-   - Reasoning effort: `low`, `medium`, or `high`
-2. Send the plan to Codex for validation:
+1. Send the plan to Codex for validation:
 ```bash
-   echo "Review this implementation plan and identify any issues:
-   [Claude's plan here]
-   
-   Check for:
-   - Logic errors
-   - Missing edge cases
-   - Architecture flaws
-   - Security concerns" | codex exec -m  --config model_reasoning_effort="" --sandbox read-only
+echo "Review this implementation plan and identify any issues:
+[Claude's plan here]
+
+Check for:
+- Logic errors
+- Missing edge cases
+- Architecture flaws
+- Security concerns" | codex exec --sandbox read-only
 ```
-3. Capture Codex's feedback
+2. Capture Codex's feedback
 
 ## Phase 3: Feedback Loop
 If Codex finds issues:
@@ -67,9 +66,9 @@ After every change:
 3. Continue the loop until code quality standards are met
 4. Use `codex exec resume --last` to continue validation sessions:
 ```bash
-   echo "Review the updated implementation" | codex exec resume --last
+echo "Review the updated implementation" | codex exec resume --last
 ```
-   **Note**: Resume inherits all settings (model, reasoning, sandbox) from original session
+**Note:** Resume continues the last Codex session using the existing config/session context.
 
 ## Recovery When Issues Are Found
 When Codex identifies problems:
@@ -92,7 +91,7 @@ When implementation errors occur:
 
 ## Command Reference
 | Phase | Command Pattern | Purpose |
-|-------|----------------|---------|
+|------:|------------------|---------|
 | Validate plan | `echo "plan" \| codex exec --sandbox read-only` | Check logic before coding |
 | Implement | Claude uses Edit/Write/Read tools | Claude implements the validated plan |
 | Review code | `echo "review changes" \| codex exec --sandbox read-only` | Codex validates Claude's implementation |
