@@ -8,22 +8,31 @@ This repository contains reusable skills that extend Claude's capabilities for s
 
 ## Skills
 
-### 1. Codex-Claude Engineering Loop
+### 1. AI Pair Programming
 
-**Location:** [`codex-claude-loop/SKILL.md`](codex-claude-loop/SKILL.md)
+**Location:** [`ai-pair-programming/SKILL.md`](ai-pair-programming/SKILL.md)
 
-A dual-AI engineering workflow that combines Claude Code's planning and implementation capabilities with Codex's validation and review strengths.
+A flexible dual-AI engineering workflow that supports custom AI pairing (Claude, Codex, Gemini, GPT-4, etc.) for collaborative development.
 
 **Key Features:**
-- **Balanced AI collaboration**: Claude handles architecture, planning, and execution while Codex provides validation and code review
+- **Customizable AI pairing**: Choose your preferred Primary AI (for planning/implementation) and Review AI (for validation/review)
+- **Balanced AI collaboration**: Primary AI handles architecture, planning, and execution while Review AI provides validation and code review
 - **Continuous feedback loop**: Each AI reviews the other's work for optimal code quality
 - **Structured phases**: Planning → Validation → Execution → Cross-Review → Iterative Improvement
 
+**Supported AI Configurations:**
+| Configuration | Primary AI | Review AI |
+|---------------|------------|-----------|
+| Claude + Codex | Claude | Codex |
+| Claude + Gemini | Claude | Gemini |
+| Gemini + Claude | Gemini | Claude |
+| GPT-4 + Codex | GPT-4 | Codex |
+
 **Workflow:**
 ```
-Plan (Claude) → Validate Plan (Codex) → Feedback →
-Implement (Claude) → Review Code (Codex) →
-Fix Issues (Claude) → Re-validate (Codex) → Repeat until perfect
+Plan ({{PRIMARY_AI}}) → Validate Plan ({{REVIEW_AI}}) → Feedback →
+Implement ({{PRIMARY_AI}}) → Review Code ({{REVIEW_AI}}) →
+Fix Issues ({{PRIMARY_AI}}) → Re-validate ({{REVIEW_AI}}) → Repeat until perfect
 ```
 
 ---
